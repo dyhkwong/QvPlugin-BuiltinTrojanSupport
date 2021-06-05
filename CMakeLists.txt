@@ -1,4 +1,4 @@
-project(QvPlugin-Demo)
+project(QvPlugin-BuiltinTrojanSupport)
 cmake_minimum_required(VERSION 3.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -29,24 +29,16 @@ include_directories(${QVPLUGIN_INTERFACE_INCLUDE_DIR})
 add_library(${PROJECT_NAME} MODULE
     SimplePlugin.hpp
     SimplePlugin.cpp
-    core/EventHandler.cpp
-    core/EventHandler.hpp
+    CommonTypes.hpp
     core/OutboundHandler.cpp
     core/OutboundHandler.hpp
-    core/SubscriptionAdapter.cpp
-    core/SubscriptionAdapter.hpp
-    core/Kernel.cpp
-    core/Kernel.hpp
+    QJsonStruct/QJsonIO.hpp
+    QJsonStruct/macroexpansion.hpp
+    QJsonStruct/QJsonStruct.hpp
     ui/Interface.hpp
     ui/PluginOutboundEditor.cpp
     ui/PluginOutboundEditor.hpp
     ui/PluginOutboundEditor.ui
-    ui/PluginInboundEditor.cpp
-    ui/PluginInboundEditor.hpp
-    ui/PluginInboundEditor.ui
-    ui/PluginMainWindowWidget.cpp
-    ui/PluginMainWindowWidget.hpp
-    ui/PluginMainWindowWidget.ui
     ui/PluginSettingsWidget.cpp
     ui/PluginSettingsWidget.hpp
     ui/PluginSettingsWidget.ui

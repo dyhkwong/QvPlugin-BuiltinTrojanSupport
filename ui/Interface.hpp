@@ -1,6 +1,4 @@
 #include "QvGUIPluginInterface.hpp"
-#include "ui/PluginInboundEditor.hpp"
-#include "ui/PluginMainWindowWidget.hpp"
 #include "ui/PluginOutboundEditor.hpp"
 #include "ui/PluginSettingsWidget.hpp"
 
@@ -14,10 +12,7 @@ class SimpleGUIInterface : public PluginGUIInterface
     QList<PluginGuiComponentType> GetComponents() const override
     {
         return {
-            GUI_COMPONENT_SETTINGS,         //
-            GUI_COMPONENT_INBOUND_EDITOR,   //
-            GUI_COMPONENT_OUTBOUND_EDITOR,  //
-            GUI_COMPONENT_MAINWINDOW_WIDGET //
+            GUI_COMPONENT_OUTBOUND_EDITOR
         };
     }
     std::unique_ptr<QvPluginSettingsWidget> createSettingsWidgets() const override
@@ -26,15 +21,15 @@ class SimpleGUIInterface : public PluginGUIInterface
     }
     QList<typed_plugin_editor> createInboundEditors() const override
     {
-        return { MakeEditorInfoPair<SimplePluginInboundEditor>("fake-protocol-in", "Fake Protocol Inbound") };
+        return {};
     }
     QList<typed_plugin_editor> createOutboundEditors() const override
     {
-        return { MakeEditorInfoPair<SimplePluginOutboundEditor>("fake-protocol-out", "Fake Protocol Outbound") };
+        return { MakeEditorInfoPair<SimplePluginOutboundEditor>("trojan", "Trojan") };
     }
     std::unique_ptr<QvPluginMainWindowWidget> createMainWindowWidget() const override
     {
-        return std::make_unique<SimplePluginMainWindowWidget>();
+        return nullptr;
     }
     QIcon Icon() const override
     {
