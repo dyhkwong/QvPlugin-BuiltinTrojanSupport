@@ -11,21 +11,10 @@ jobs:
       matrix:
         qt_version: [5.11.3]
         platform: [ubuntu-16.04, macos-latest, windows-latest]
-        arch: [x86, x64]
+        arch: [x64]
         include: 
           - platform: windows-latest
-            arch: x86
-            qtarch: win32_msvc2015
-            cmakearch: Win32
-          - platform: windows-latest
-            arch: x64
             qtarch: win64_msvc2015_64
-            cmakearch: x64
-        exclude:
-          - platform: ubuntu-16.04
-            arch: x86
-          - platform: macos-latest
-            arch: x86
       fail-fast: false
         
     runs-on: ${{ matrix.platform }}
@@ -42,11 +31,6 @@ jobs:
         run: echo ::set-output name=NAME::QvPlugin-Demo
       - name: Checking out sources
         uses: actions/checkout@master
-      - name: Install Python 3.7 version
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.7'
-          architecture: ${{ matrix.arch }}
       - name: Restoring submodules
         run: git submodule update --init
 # =========================================================================================================
@@ -63,11 +47,10 @@ jobs:
           path: ../Qt
           key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}-${{ matrix.qtarch }}
       - name: Installing Qt - ${{ matrix.arch }}
-        uses: jurplel/install-qt-action@v2.5.3
+        uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
 # ========================================================================================================= Generate MakeFile and Build
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
@@ -79,7 +62,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
+          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.arch }}
           cmake --build . --parallel $(nproc) --config Release
 # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
@@ -95,8 +78,8 @@ jobs:
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
-          CC: gcc-7
-          CXX: g++-7
+          CC: gcc-9
+          CXX: g++-9
           CXXFLAGS: -fno-sized-deallocation
         run: |
           mkdir build

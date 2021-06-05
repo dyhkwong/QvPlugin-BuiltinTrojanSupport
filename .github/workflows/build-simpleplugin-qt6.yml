@@ -30,10 +30,6 @@ jobs:
         run: echo ::set-output name=NAME::QvPlugin-Demo
       - name: Checking out sources
         uses: actions/checkout@master
-      - name: Install Python 3.7 version
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.7'
       - name: Restoring submodules
         run: git submodule update --init
 # =========================================================================================================
@@ -87,8 +83,8 @@ jobs:
         if: matrix.platform == 'ubuntu-20.04'
         shell: bash
         env:
-          CC: gcc-7
-          CXX: g++-7
+          CC: gcc-9
+          CXX: g++-9
           CXXFLAGS: -fno-sized-deallocation
         run: |
           mkdir build
